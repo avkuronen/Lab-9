@@ -1,35 +1,43 @@
 <html>
 <head>
-    <title>Best store!</title>
+    <title>Hardware parts list</title>
     <script type="text/javascript" src="/static/update.js"></script>
     <link href="static/store.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Furniture store:</h1>
-    <h3>Add new product:</h3>
-    <form>
+  <div class="main">
+    <h1>PC hardware parts list:</h1>
+    <h3>Add new part:</h3>
+    <form onsubmit="addProduct(event)">
         <div>
-            <input type="text" name="prod_name" id="prod_name">
-            <label for="prod_name">Product name</label>
+            <label for="hardware_part">Part name</label>
+            <input type="text" name="hardware_part" id="hardware_part" required>
         </div>
         <div>
-            <input type="number" name="price" id="price">
             <label for="price">Price (rub.)</label>
+            <input type="number" name="price" id="price" required>
         </div>
-        <button onClick="addProduct()">Add</button>
+        <button type="submit">Add</button>
     </form>
-    <ul>
-        {% for product in products_list %}
-        <li>
-            <div>
-                <div>{{ product['prod_name'] }}</div>
-                <div>{{ product['price'] }} rub.</div>
-                <input value="{{product['id']}}" onChange="updateProd(this)" name="in_stock" type="checkbox" {% if product.in_stock %} checked {% endif %}>
-                <label for="in_stock">In stock</label>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+    {% if products_list_length != 0 %}
+      <h3>Parts list:</h3>
+      <div>
+        <button onclick="deleteAllProducts()">Remove all</button></div>
+      <ul id="products_list">
+          {% for product in products_list %}
+          <li>
+              <div>
+                <div class="product-item">
+                  <div>{{ product['hardware_part'] }}</div>
+                  <div>{{ product['price'] }} rub.</div>
+                </div>
+                  <button onclick="deleteProduct({{ product['id'] }})">Remove</button>
+              </div>
+          </li>
+          {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
 </body>
 </html>
